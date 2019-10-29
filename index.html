@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<head>
+<title>Variations on a Gene
+</title>
+<meta charset = "utf-8">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/an-old-hope.min.css">
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.2.2/math.min.js"></script>
+</head>
+<body>
+<script>
+//highlight code
+document.addEventListener('DOMContentLoaded', (event) => {
+	document.querySelectorAll('pre code').forEach((block) => {
+		hljs.highlightBlock(block);
+	});
+});
+</script>
+<div id = "title">Variations on a Gene</div>
+<noscript><h3>Warning: JavaScript is disabled on this device</h3>
+<img src = "https://upload.wikimedia.org/wikipedia/commons/6/6e/VisualEditor_-_Icon_-_Alert.svg" alt = "warning icon">
+<h3>Please <a href = "https://www.enable-javascript.com/">enable JavaScript</a> to view this page</h3>
+</noscript>
+
+<div id = "IE"><h3>You are viewing this page in Internet Explorer</h3>
+<img src = "https://upload.wikimedia.org/wikipedia/commons/6/6e/VisualEditor_-_Icon_-_Alert.svg" alt = "warning icon">
+<h3>Due to Microsoft's insistence on being different, this page cannot be properly displayed in Internet Explorer.
+<br> Please switch to a normal browser (preferably Google Chrome).</h3>
+<button type = "button" onclick = "$('#IE').hide(); alert('See, I told you so!');">View Anyways</button>
+<script>
+var isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
+if(!isIE){
+	$("#IE").hide()
+}
+</script>
+</div>
+<style>
+#IE{
+	width: 100vw;
+	height: 95vh;
+	position: fixed;
+	top:6vh;
+	text-align: center;
+	background-color: #ddd;
+	z-index: 1000;
+}
+</style>
+<div id = "vert-bars">
+<div id = "barx" class = "bars"></div>
+<div id = "bary" class = "bars"></div>
+<div id = "barz" class = "bars"></div></div>
+<div id = "sidebar">
+<div id = "top">
+<div id = "header"></div>
+<div id = "arrow">
+<div id = "bar1" class = "bars"></div>
+<div id = "bar2" class = "bars"></div>
+<div id = "bar3" class = "bars"></div>
+</div>
+</div>
+<div id = "content">
+<nav>
+<ul class = "nav">
+<li>HTML</li>
+<li>CSS</li>
+<li>JavaScript</li>
+<li>Python</li>
+<li>Sheet Music</li>
+<li>Resources</li>
+<li>Citations</li>
+<!--<li>Feedback</li>-->
+</ul>
+</nav><pre>
+<code id = "HTMLContent"  class = "Contents" class = "code">
+</code></pre><pre>
+<code id = "CSSContent"  class = "Contents" class = "code">
+</code></pre><pre>
+<code id = "JavaScriptContent"  class = "Contents" class = "code">
+</code></pre><pre>
+<code id = "PythonContent" class = "Contents" class = "code">
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Sep 22 15:50:41 2019
+
+@author: kids
+"""
+#import necessary modules and functions
+from scipy import io
+import numpy as np
+import matplotlib.pyplot as plt
+
+#file path
+path = "C:\\Users\\kids\\Expressions\\"
+
+#function to load EKG
+def loadmat(path):
+    
+    mat = io.loadmat(path)
+    print(type(mat))
+    print(mat.keys())
+    for key in mat.keys():
+        if not key == 'val': print(mat[key])
+    EKG = np.array(mat['val'], dtype = float)
+    return EKG, mat.keys()
+
+#function to plot results
+def plot(lead, xmin = 0, xmax = 1):
+    fs = 250
+    time = np.arange(lead.size) / fs
+    fig = plt.plot(time, lead)
+    plt.xlim(xmin, xmax)
+    plt.show()
+#load EKG    
+EKG, headers = loadmat(path + 's30731m.mat')
+#view data about EKG
+print(EKG.shape)
+print(EKG)
+
+#split into leads
+lead_0 = EKG[0]
+lead_1 = EKG[1]
+lead_2 = EKG[2]
+
+#save each lead as a numpy array (.npy)
+np.save(path + 'ekg_lead_0', lead_0)
+np.save(path + 'ekg_lead_1', lead_1)
+np.save(path + 'ekg_lead_2', lead_2)
+
+print(lead_1)
+
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Sep 23 20:52:19 2019
+
+@author: kids
+"""
+import numpy as np
+
+path = 'C:\\Users\\kids\\Expressions\\'
+#load EKG
+ecg = np.load(path + '30731_ekg_data\\ekg_lead_1.npy')
+
+print(max(ecg))
+print(min(ecg))
+
+#remove extreme values
+ecg[ecg > 200] = 200
+ecg[ecg &lt; -200] = -200
+#take a slice of the EKG
+ecg = ecg[400000:405000]
+
+#assign a bin number to each note
+notes = {1:'a3', 2:'b3', 3:'c4', 4:'d4', 5:'e4', 6:'f4', 7:'g4', 8:'a4', 9:'b4',
+         10:'c5', 11:'d5', 12:'e5', 13:'f5', 14:'g5'}
+#create bins
+bins = np.linspace(-200, 200, 14)
+#show bins
+print(bins)
+#bin EKG
+binned = np.digitize(ecg, bins)
+print(binned)
+#initialize note array
+note = []
+
+for x in binned:
+    #append the corresponding note for each EKG sample to the array
+    note.append(notes[x])
+     
+print(np.bincount(binned))
+#save as csv
+np.savetxt(path + '1000_notes.csv', note, fmt = '%s', delimiter = ', ')
+</code></pre>
+<div id = "AboutContent" class = "Contents">
+<table border=0 cellspacing=0 cellpadding=0 class = "iframe-wrapper"><iframe src = "https://github.com/DFERTEL/eXpressions/blob/master/temppdf.pdf">
+</iframe></table>
+</div>
+<div id = "ResourcesContent" class = "Contents">
+</div>
+<div id = "CitationsContent" class = "Contents">
+<ul class = "resources">
+<li class = "resource"><a href = "https://highlightjs.org/">Highlight.js</a> - Syntax highlighting</li>
+<li class = "resource"><a href = "https://p5js.org">p5.js</a> - Animation</li>
+<li class = "resource"><a href = "https://jquery.com">jQuery</a> - Event handling and DOM manipulation</li>
+<li class = "resource"><a href = "https://commons.wikimedia.org/wiki/File:VisualEditor_-_Icon_-_Alert.svg">Warning icon</a> - Visual Editor Team</li>
+<li class = "resource"><a href = "https://archive.physionet.org/cgi-bin/atm/ATM">PhysioBank ATM</a> - Downloading and viewing EKGs</li>
+<li class = "resource"><a href = "https://physionet.org/content/ltstdb/1.0.0/">Long-term ST Database</a>/<a href = "https://physionet.org/content/ltstdb/1.0.0/s30731.hea">EKG</a><br>Original publication:
+Franc Jager, Alessandro Taddei, George B. Moody, Michele Emdin, Gorazd Antolic, Roman Dorn, Ales Smrdel, Carlo Marchesi, and Roger G. Mark. Long-term ST database: a reference for the development and evaluation of automated ischaemia detectors and for the study of the dynamics of myocardial ischaemia. Medical &amp; Biological Engineering &amp; Computing 41(2):172-183 (2003).
+
+Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet: Components of a New Research Resource for Complex Physiologic Signals (2003). Circulation. 101(23):e215-e220.</li>
+<li class = "resource"><a href = "https://www.anaconda.com/distribution/">Python - Anaconda Distribution</a> <ul class = "sub-cat-resource">
+<li class = "sub-resource"><a href = "https://numpy.org">NumPy</a> - </li>
+<li class = "sub-resource"><a href = "https://scipy.org">SciPy</a> - .mat to .npy conversion</li>
+<li class = "sub-resource"><a href = "https://matplotlib.org">matplotlib</a> - Plotting EKGs <br>	<a href = "https://matplotlib.org/users/credits.html">Contributors</a></li>
+</ul></li>
+</ul>
+</div>
+<!--<div id = "FeedbackContent" class = "Contents">
+</div>-->
+</div>
+</div>
+<div id = "footer">
+&copy;2019 Devorah Fertel
+</div>
+<div id = "container">
+</div>
+<style>
+noscript{
+	position: fixed;
+	width: 100vw;
+	height: 95vh;
+	top: 5vh;
+	z-index: 1000;
+	text-align: center;
+	background-color: #ddd;
+}
+noscript h3{
+	verical-align: middle;
+	line-height: 15vh;
+}
+img{
+	width: 128px;
+	height: 128px;
+}
+iframe{
+	position: fixed;
+	top: 12vh;
+	height: 85vh;
+	width: calc(75vw - 17px);
+	margin: 0;
+	padding: 0;
+}
+pre code{
+	width: calc(75vw - 17px);
+}
+.iframe-wrapper{
+	overflow: hidden;
+	height: 100%;
+}
+body{
+	margin:0;
+	padding:0;
+	background-color: black;
+	font-family: sans-serif;
+}
+#title{
+	height: 5vh;
+	background-color: teal;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 5vh;
+	color: #333;
+	font-weight: bold;
+	font-size: 2em;
+	letter-spacing: 0.1em;
+}
+@media only screen and (max-width: 800px){
+	#sidebar{
+		position: fixed;
+		display: none;
+	}
+	.Contents{
+		//width:100%;
+	}
+	#vert-bars{
+		width: 50px;
+		height: 7vh;
+	}
+	.iframe-wrapper{
+		width: 98vw;
+	}
+	iframe{
+		width: 100%;
+	}
+	pre code{
+		width: 98vw;
+	}
+}
+#sidebar{
+	width: 200px;
+	height: 95vh;
+	background-color: #eee;
+	position: fixed;
+	z-index: 100;
+}
+#header{
+	background-color: #333;
+	height: 7vh;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 7vh;
+	font-size: 1.5rem;
+	padding-left:0.5vw;
+	color: white;
+}
+
+#arrow{
+	height: 6vh;
+	width: 4vw;
+	position: fixed;
+	top: 5vh;
+	left: 0;
+}
+.bars{
+	height: 0.5vh;
+	width: 3vw;
+	min-width: 20px;
+	max-width:40px;
+	background-color: teal;
+	position: fixed;
+	left: 10px;
+	z-index: 1000;
+}
+#bar1{
+	top: 7vh;
+}
+#bar2{
+	top: 8.25vh;
+}
+#bar3{
+	top: 9.5vh;
+}
+#barx{
+	top:7vh;
+}
+#bary{
+	top:8.25vh;
+}
+#barz{
+	top:9.5vh;
+}
+.resources{
+	color: dark-gray;
+	width: 70vw;
+	
+}
+.nav{
+	height:85vh;
+	margin: 0;
+	padding: 0;
+	background-color: teal;
+	color: white;
+}
+.nav li{
+	list-style-type:none;
+	height: calc(80vh/7);
+	background-color: #999;
+	border: 2px solid teal;
+	vertical-align: middle;
+	line-height: calc(80vh/7);
+	padding-left: 10px;
+	font-size: 1.3rem;
+}
+.Contents{
+	display:none;
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+	overflow-y: hidden;
+	height: 85vh;
+	position: fixed;
+	top: 12vh;
+	white-space: pre-wrap;
+	width: 75vw;
+}
+.Contents:hover{
+	overflow-y: scroll;
+}
+#AboutContent{
+	overflow: hidden;
+	width: 90vw;
+	margin: 0;
+	padding: 0;
+}
+#content{
+	margin: 0;
+	padding: 0;
+	
+}
+#footer{
+	height: 3vh;
+	display: block;
+	width: 100vw;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 3vh;
+	font-size: .75em;
+	background-color: #333;
+	position: fixed;
+	bottom: 0;
+	z-index: 1000;
+	color: white;
+}
+#container{
+	position: absolute;
+	top: 5vh;
+	right: 0;
+	bottom: 0;
+}
+</style>
+
+<!----><script>
+//enable strict mode
+"use strict";
+//initialize all the variables
+let spacing = 2;
+let theta = Math.PI/2;
+console.log(theta);
+let amplitude;
+let xoff = 0;
+let red, green, blue;
+let black;
+let radius = 8;
+let wwidth, wheight;
+let index = 0;
+let index_ = 0;
+
+//create a class for the points
+function Point(x, y, radius, inv){
+	//create position vector
+	this.posit = createVector(x, y);
+	//assign radius property
+	this.r = radius;
+	//assign angle property
+	this.theta = theta;
+	//assign whether the wave is inverted
+	this.inv = inv
+	//random noise for the colors
+	this.red = noise(xoff + 1) * 255;
+	this.green = noise(xoff + 2) * 255;
+	this.blue = noise(xoff + 3) * 255;
+	//assign index of point
+	this.index = index;
+	//increment current index
+	index += 1;
+	//increment the x-offset of the perlin noise function
+	xoff += .005;
+	//function to update points
+	this.update = function(){
+		//if inverted, increment position by the negative sine of the angle,
+		//else increment by sine of the angle
+		inv ? (this.posit.y += -sin(this.theta)):
+			  (this.posit.y += sin(this.theta));
+		//increment angle
+		this.theta += PI/amplitude;
+		//increment horiz. position
+		this.posit.x += 1;
+		//display point
+		this.show();
+	};//end update
+	//show method
+	this.show = function(){
+		//outline color
+		stroke(this.red, this.green, this.blue);
+		//fill color + alpha for opacity
+		fill(this.red, this.green, this.blue, 0.3);
+		//point position
+		circle(this.posit.x, this.posit.y, this.r);
+	};//end show()
+	
+};//end Point()
+function EKGpoint(x, y, radius){
+	//create position vector
+	this.posit = createVector(x, y);
+	//assign radius property
+	this.r = radius;
+	this.index = index_;
+	index_++;
+	this.update = function(){
+		this.posit.x++;
+		if(this.posit.x > EKG.length){
+			this.posit.x = 0;
+		};
+		this.posit.y = EKG[this.posit.x];
+		this.show();
+	};
+	this.show = function () {
+		stroke(255);
+		fill(255);
+		circle(this.posit.x, this.posit.y, this.r);
+	};
+}
+//initialize point arrays
+let points = [];
+let invPoints = [];
+let EKG;
+//all load tasks in preload() (runs once)
+function preload(){
+	//load the EKG file
+	//loadStrings('ekg.txt', function (result){
+//		ekg = result
+//	});
+
+	//load music file
+	//loadSound();
+};//end preload
+//all initialization tasks in setup() (runs once)
+function setup(){
+	//print(ekg);
+	let canvas;
+	(( windowWidth > 800) ? 
+	(canvas = createCanvas(windowWidth*76/100, windowHeight*19/20)):
+	(canvas = createCanvas(windowWidth , windowHeight*19/20)));
+	canvas.parent("container");
+	amplitude = height/2;
+	background(0);
+	points[0] = new Point(0, height/2, radius, false);
+	invPoints[0] = new Point(0, (height/2), radius, true);
+};//end setup
+//runs whenever the window is resized
+function windowResized(){
+	((200 < 0.24 * windowWidth < 300) ? 
+	resizeCanvas(windowWidth*76/100, windowHeight*19/20):
+	((0.24 * windowWidth > 300) ?
+	resizeCanvas(windowWidth - 300, windowHeight*19/20):
+	resizeCanvas(windowWidth - 200, windowHeight*19/20)));
+};//end windowResized
+//main loop
+function draw(){
+	//set black background
+	background(0);
+	//initialize a counter variable
+	let j = 0;
+	//iterate through points
+	for(let p of points){
+		//check if the point's index is divisible by 60
+		if (p.index % 60 == 0){
+			//set the weight of the stroke
+			strokeWeight(radius/2);
+			//set the line color to the point's color
+			stroke(p.red, p.green, p.blue);
+			//draw a line from top point to bottom point
+			line(p.posit.x, p.posit.y, invPoints[j].posit.x, invPoints[j].posit.y);
+		};//end if
+		//increment
+		j++;
+		p.update()
+	};//end foreach
+	for(let p of invPoints){
+		//update each point
+		p.update()
+	};//end foreach
+	//iterate through points
+	for(let i = 0; i < points.length; i++){
+		//check horiz. dist.
+		if(points[i].posit.x == spacing/2){
+			//if large enough, add new point
+			points[i + 1] = new Point(0, height/2, radius, false)
+		};//end if
+		//check if point is at edge of screen
+		if (points[i].posit.x == width){
+			//remove the point
+			points.splice(points[i], 1);
+		};//end if
+	};
+	for(let i = 0; i < invPoints.length; i++){
+		if(invPoints[i].posit.x == spacing/2){
+			invPoints[i + 1] = new Point(0,( height)/2, radius, true);
+		};
+		if(invPoints[i].posit.x == width){	
+			invPoints.splice(invPoints[i], 1);
+		};
+	};
+};
+</script><!---->
+<script>//DONT TOUCH ALL WORKS
+//get content for HTML, CSS, and JavaScript tabs
+let html = $('html').html();
+//split the text into lines on each newline char
+let lines = html.split("\n");
+let javaScript = [];
+let css = [];
+//write the first two lines of HTML to the array
+let html_code = ['<!DOCTYPE html>', '<html>'];
+//iterate through the lines of code
+for(let i = 0; i < lines.length; i++){
+	//check if each line contains a <style> tag and make sure it isn't this one
+	if(lines[i].includes("<style>") && !lines[i].includes("if")){
+		//add the line to the css line array
+		css.push(lines[i]);
+		//iterate through the remaining lines
+		for(let j = i + 1; j < lines.length; j++){
+			//check if each line includes a closing </style> tag
+			if(lines[j].includes("<\/style>")){
+				//add the closing </style> tag
+				css.push(lines[j]);
+				//break out of the inner for-loop
+				break;
+			}else{
+				//else just add the line to the array
+				css.push(lines[j]);
+			}//end if-else
+		}//end for
+	//check if each line includes a <script> tag and make sure it isn't this one
+	}else if(lines[i].includes("<script>") && !lines[i].includes("if")){
+		//add the line to the JavaScript code array
+		javaScript.push(lines[i]);
+		//iterate through the remaining lines
+		for(let j = i + 1; j < lines.length; j++){
+			//check if each line contains a closing <\/script> tag
+			//(the backslash escapes it so it doesn't prematurely end this script)
+			if(lines[j].includes("<\/script>")){
+				//add the closing tag
+				javaScript.push(lines[j]);
+				//break out of inner for-loop
+				break;
+			}else{
+				//else just add the line to the array
+				javaScript.push(lines[j]);
+			}//end if-else
+		}//end for
+	}else{
+		//if the line isn't JavaScript or CSS
+		if(!javaScript.includes(lines[i]) && !css.includes(lines[i])){
+			//add it to the HTML code array
+			html_code.push(lines[i]);
+		}//end if
+	}//end if-else
+}//end for
+//add the last line of HTML
+html_code.push('<\/html>', '\n');
+css.push('\n');
+javaScript.push('\n');
+//join the arrays into strings, with newlines at the boundaries
+html_code = html_code.join('\n');
+css = css.join('\n');
+javaScript = javaScript.join('\n');
+//console.log(css)
+//write the text to the divs
+$('#HTMLContent').text(html_code);
+$('#CSSContent').text(css);
+$('#JavaScriptContent').text(javaScript);
+//END DONT TOUCH ALL WORKS
+//onclick handlers
+$("li:contains(HTML)").click(function(){
+	//hide the tabs
+	$(".nav").hide();
+	//show the correct content
+	$("#HTMLContent").show();
+	//show the correct header
+	$("#header").text("HTML");
+});
+$("li:contains(CSS)").click(function(){
+	$(".nav").hide();
+	$("#CSSContent").show();	
+	$("#header").text("CSS");
+});
+$("li:contains(JavaScript)").click(function(){
+	$(".nav").hide();
+	$("#JavaScriptContent").show();
+	$("#header").text("JavaScript");
+});
+$("li:contains(Python)").click(function(){
+	$(".nav").hide();
+	$("#PythonContent").show();
+	$("#header").text("Python");
+});
+$("li:contains(Sheet Music)").click(function(){
+	$(".nav").hide();
+	$("#AboutContent").show();
+	$("#header").text("Sheet Music");
+});
+$("li:contains(Resources)").click(function(){
+	$(".nav").hide();
+	$("#ResourcesContent").show();
+	$("#header").text("Resources");
+});
+$("li:contains(Citations)").click(function(){
+	$(".nav").hide();
+	$("#CitationsContent").show();
+	$("#header").text("Citations");
+});
+/*$("li:contains(Feedback)").click(function(){
+	$("li").hide();
+	$("#FeedbackContent").show();
+	$("#header").text("Feedback");
+});*/
+
+$("#arrow").click(function(){
+	//return to tabs
+	$(".nav").show();
+	//hide text
+	$(".Contents").hide();
+	$('#sidebar').css('width', '200');
+	//clear header text
+	$("#header").text("");
+});
+$('#vert-bars').click(function (){
+	$('#sidebar').show()
+	$('#vert-bars').hide();
+});
+if($(window).width() < 800){
+	$('nav').click(function(){
+		$('#sidebar').css("width", "100vw");
+	});
+}else{
+	$('nav').click(function(){
+		$('#sidebar').css("width", "75vw");
+	});
+}
+
+
+
+
+
+
+</script>
+</body>
