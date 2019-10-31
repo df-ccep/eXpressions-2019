@@ -24,7 +24,9 @@ def loadmat(path):
 
 def plot(lead, xmin = 0, xmax = 1):
     '''Plot EKG using matplotlib'''
+    #sampling rate
     fs = 250
+    #convert samples to time
     time = np.arange(lead.size) / fs
 
     fig = plt.plot(time, lead)
