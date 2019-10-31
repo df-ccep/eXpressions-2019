@@ -3,6 +3,7 @@
 <title>Variations on a Gene
 </title>
 <meta charset = "utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -48,7 +49,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	}
 }
 </style>
-<audio src = "temp.mp3" type="audio/mpeg" controls></audio>
+<audio src = "Variations on a Gene-mp3.mp3" type="audio/mpeg" controls></audio>
 <style id = "external-elem-style">
 .iframe-wrapper{
 	height: 80vh;
@@ -269,11 +270,27 @@ print(np.bincount(binned))
 #save as csv
 np.savetxt(path + '1000_notes.csv', note, fmt = '%s', delimiter = ', ')
 
+# -*- coding: utf-8 -*-
+"""
+@author: dfertel
+"""
+import numpy as np
+
+ekg = np.load("F:\\30731_ekg_data\\ekg_lead_1.npy")
+
+ekg = ekg[400000:401250]
+#EKG values all between -1 and 1
+ekg = ekg / np.max(np.abs(ekg))
+#So I can copy-paste into JavaScript (It's not letting me upload files directly from JS)
+print([e for e in ekg], end = ', ')
+
+#np.save(ekg, "ekg_for_js")
+
 </code></pre>
 <div id = "SheetMusicContent" class = "Contents">
 <!--<h4><a href = "https://df-ccep.github.io/eXpressions-2019/sheet_music.pdf" >Sheet Music</a></h4>-->
 <table border=0 cellspacing=0 cellpadding=0 class = "iframe-wrapper">
-<iframe src="https://df-ccep.github.io/eXpressions-2019/sheet_music.pdf" >Oops! Something went wrong!</iframe></table>
+<iframe src="https://df-ccep.github.io/eXpressions-2019/Variations on a Gene-sheet music.pdf" >Oops! Something went wrong!</iframe></table>
 </div>
 <div id = "ResourcesContent" class = "Contents">
 <h2>Programming Resources</h2>
@@ -302,6 +319,7 @@ np.savetxt(path + '1000_notes.csv', note, fmt = '%s', delimiter = ', ')
 <div id = "CitationsContent" class = "Contents">
 <ul class = "resources">
 <li><a href = "https://css-tricks.com">CSS Tricks</a> - Chris Coyier</li>
+<li><a href = "https://realfavicongenerator.net/">Real Favicon Generator</a></li>
 <li><a href = "https://highlightjs.org/">Highlight.js</a> - <a href = "https://github.com/highlightjs/highlight.js/blob/master/AUTHORS.en.txt">Authors</a></li>
 <li><a href = "https://jquery.com">jQuery</a> - <a href = "https://github.com/jquery/jquery/blob/master/AUTHORS.txt">Authors</a></li>
 <li><a href = "https://matplotlib.org">matplotlib</a> - John D. Hunter. Matplotlib: A 2D Graphics Environment, Computing in Science &amp; Engineering, 9, 90-95 (2007), <a href = "https://doi.org/10.1109/MCSE.2007.55">DOI:10.1109/MCSE.2007.55</a> (<a href = "http://scitation.aip.org/content/aip/journal/cise/9/3/10.1109/MCSE.2007.55">publisher link</a>)</li>
@@ -401,8 +419,8 @@ body{
 	display: none;
 	position: fixed;
 	top: 12vh;
-    word-wrap: break-word; 
-    overflow-wrap: break-word;
+    	word-wrap: break-word; 
+    	overflow-wrap: break-word;
 	overflow-y: hidden;
 	white-space: pre-wrap;
 }.Contents:hover{
