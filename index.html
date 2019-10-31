@@ -629,6 +629,73 @@ function draw(){
 	};
 };
 </script>
+<script id = "onclick-handlers">
+//onclick handlers
+$(".tab:contains(HTML)").click(function(){
+	//hide the tabs
+	$(".nav").hide();
+	//show the correct content
+	$("#HTMLContent").show();
+	//show the correct header
+	$("#header").text("HTML");
+});
+$(".tab:contains(CSS)").click(function(){
+	$(".nav").hide();
+	$("#CSSContent").show();	
+	$("#header").text("CSS");
+});
+$(".tab:contains(JavaScript)").click(function(){
+	$(".nav").hide();
+	$("#JavaScriptContent").show();
+	$("#header").text("JavaScript");
+});
+$(".tab:contains(Python)").click(function(){
+	$(".nav").hide();
+	$("#PythonContent").show();
+	$("#header").text("Python");
+});
+$(".tab:contains(Sheet Music)").click(function(){
+	$(".nav").hide();
+	$("#SheetMusicContent").show();
+	$("#header").text("Sheet Music");
+});
+$("li:contains(Resources)").click(function(){
+	$(".nav").hide();
+	$("#ResourcesContent").show();
+	$("#header").text("Resources");
+});
+$(".tab:contains(Citations)").click(function(){
+	$(".nav").hide();
+	$("#CitationsContent").show();
+	$("#header").text("Citations");
+});
+$("#three-bars").click(function(){
+	//return to tabs
+	$(".nav").show();
+	//hide text
+	$(".Contents").hide();
+	if($(window).width() < 800){ 
+		$('#sidebar').hide();
+		$('#vert-bars').show();
+	};
+	$('#sidebar').css('width', '200');
+	//clear header text
+	$("#header").text("");
+});
+$('#vert-bars').click(function (){
+	$('#sidebar').show();
+	$('#vert-bars').hide();
+});
+if($(window).width() < 800){
+	$('nav').click(function(){
+		$('#sidebar').css("width", "100vw");
+	});
+}else{
+	$('nav').click(function(){
+		$('#sidebar').css("width", "75vw");
+	});
+};
+</script>
 <script id = "get-content">//DONT TOUCH ALL WORKS
 //get content for HTML, CSS, and JavaScript tabs
 let html = $('html').html();
@@ -697,73 +764,6 @@ $('#HTMLContent').text(html_code);
 $('#CSSContent').text(css);
 $('#JavaScriptContent').text(javaScript);
 //END DONT TOUCH ALL WORKS
-</script>
-<script id = "onclick-handlers">
-//onclick handlers
-$(".tab:contains(HTML)").click(function(){
-	//hide the tabs
-	$(".nav").hide();
-	//show the correct content
-	$("#HTMLContent").show();
-	//show the correct header
-	$("#header").text("HTML");
-});
-$(".tab:contains(CSS)").click(function(){
-	$(".nav").hide();
-	$("#CSSContent").show();	
-	$("#header").text("CSS");
-});
-$(".tab:contains(JavaScript)").click(function(){
-	$(".nav").hide();
-	$("#JavaScriptContent").show();
-	$("#header").text("JavaScript");
-});
-$(".tab:contains(Python)").click(function(){
-	$(".nav").hide();
-	$("#PythonContent").show();
-	$("#header").text("Python");
-});
-$(".tab:contains(Sheet Music)").click(function(){
-	$(".nav").hide();
-	$("#SheetMusicContent").show();
-	$("#header").text("Sheet Music");
-});
-$("li:contains(Resources)").click(function(){
-	$(".nav").hide();
-	$("#ResourcesContent").show();
-	$("#header").text("Resources");
-});
-$(".tab:contains(Citations)").click(function(){
-	$(".nav").hide();
-	$("#CitationsContent").show();
-	$("#header").text("Citations");
-});
-$("#three-bars").click(function(){
-	//return to tabs
-	$(".nav").show();
-	//hide text
-	$(".Contents").hide();
-	if($(window).width() < 800){ 
-		$('#sidebar').hide();
-		$('#vert-bars').show();
-	};
-	$('#sidebar').css('width', '200');
-	//clear header text
-	$("#header").text("");
-});
-$('#vert-bars').click(function (){
-	$('#sidebar').show();
-	$('#vert-bars').hide();
-});
-if($(window).width() < 800){
-	$('nav').click(function(){
-		$('#sidebar').css("width", "100vw");
-	});
-}else{
-	$('nav').click(function(){
-		$('#sidebar').css("width", "75vw");
-	});
-};
 </script>
 </body>
 </html>
