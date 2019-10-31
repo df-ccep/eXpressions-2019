@@ -50,6 +50,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 </style>
 <audio src = "temp.mp3" type="audio/mpeg" controls></audio>
 <style id = "external-elem-style">
+#SheetMusicContent a{
+	color: red;
+	z-index: 100000;
+	background-color: yellow;
+}
 .iframe-wrapper{
 	height: 80vh;
 	overflow: hidden;
@@ -269,7 +274,7 @@ np.savetxt(path + '1000_notes.csv', note, fmt = '%s', delimiter = ', ')
 
 </code></pre>
 <div id = "SheetMusicContent" class = "Contents">
-<a href = "sheet_music.pdf" >Sheet Music</a>
+<a href = "https://df-ccep.github.io/eXpressions-2019/sheet_music.pdf" >Sheet Music</a>
 <table border=0 cellspacing=0 cellpadding=0 class = "iframe-wrapper">
 <iframe src="https://df-ccep.github.io/eXpressions-2019/sheet_music.pdf" >Oops! Something went wrong!</iframe></table>
 </div>
