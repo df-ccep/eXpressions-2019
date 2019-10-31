@@ -725,14 +725,14 @@ for(let i = 0; i < lines.length; i++){
 			}//end if-else
 		}//end for
 	//check if each line includes a <script> tag and make sure it isn't this one
-	}else if(lines[i].includes("<script") && !lines[i].includes("if")){
+	}else if(lines[i].includes("<script") && !lines[i].includes("if") && !lines[i].includes("src")){
 		//add the line to the JavaScript code array
 		javaScript.push(lines[i]);
 		//iterate through the remaining lines
 		for(let j = i + 1; j < lines.length; j++){
 			//check if each line contains a closing <\/script> tag
 			//(the backslash escapes it so it doesn't prematurely end this script)
-			if(lines[j].includes("<\/script>")){
+			if(lines[j].includes("<\/script>") && !lines[j].includes("src")){
 				//add the closing tag
 				javaScript.push(lines[j]);
 				//break out of inner for-loop
