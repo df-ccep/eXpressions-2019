@@ -20,6 +20,9 @@
 </head>
 <body>
 <script>
+/**
+Displays alert onload and syntax highlights all the code in the tabs
+*/
 alert("Looks best in full screen mode")
 //highlight code
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -94,6 +97,9 @@ noscript{
 <br> Please switch to a normal browser (preferably Google Chrome).</h3>
 <button type = "button" onclick = "$('#IE').hide(); alert('See, I told you so!');">View Anyways</button>
 <script>
+/**
+Checks if browser is Internet Explorer and if not, removes special message for IE users
+*/
 var isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
 if(!isIE){
 	$("#IE").hide()
@@ -444,6 +450,10 @@ body{
 }
 </style>
 <script id = "animation">
+/**
+Draw the DNA strand and the EKG and the code
+for when the canvas is clicked or the window is resized
+*/
 //enable strict mode
 "use strict";
 //initialize all the variables
@@ -630,6 +640,10 @@ function draw(){
 };
 </script>
 <script id = "onclick-handlers">
+/**
+show content of the tabs when clicked and get HTML/CSS/JS code 
+displayed in the tabs
+*/
 //onclick handlers
 $(".tab:contains(HTML)").click(function(){
 	//hide the tabs
