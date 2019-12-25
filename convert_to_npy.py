@@ -3,6 +3,11 @@
 Created on Sun Sep 22 15:50:41 2019
 
 @author: dfertel
+
+This is the code I used to convert the EKG files to NumPy format
+and to figure out which section of the EKG (the whole thing is 24 hrs)
+looks the way I want it to, with isoelectric QRS-complexes,
+prominent ST-elevation and T-wave inversion
 """
 from scipy import io
 import numpy as np
