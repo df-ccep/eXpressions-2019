@@ -3,6 +3,8 @@
 Created on Mon Sep 23 20:52:19 2019
 
 @author: dfertel
+
+This is the code I used to turn the raw EKG values into notes
 """
 import numpy as np
 
@@ -38,6 +40,7 @@ for x in binned:
 print(note, end = ' ')  
 print(np.bincount(binned))
 
+#Don't know why this line is here
 np.reshape(note, (50, 20))
 #save as a comma-separated values file
 np.savetxt(path + '1000_notes.csv', note, fmt = '%s', delimiter = ', ')
